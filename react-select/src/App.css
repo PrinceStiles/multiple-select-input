@@ -59,3 +59,19 @@ body {
 .suggestions li img {
   height: 2rem;
 }
+
+.user-pill {
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  background-color: black;
+  color: #fff;
+  padding: 0.6rem 1rem;
+  border-radius: 1.6rem;
+  cursor: pointer;
+}
+
+.user-pill img {
+  height: 100%;
+}

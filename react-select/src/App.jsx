@@ -1,11 +1,14 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "./App.css";
+import Pill from "./components/Pill";
 
 function App() {
   const [searchTerm, setSearchTerm] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const [selected, setSelected] = useState([]);
   const [selectedCheck, setSelectedCheck] = useState(new Set());
+
+  const inputRef = useRef();
 
   useEffect(() => {
     const fetchUser = () => {
@@ -29,19 +32,46 @@ function App() {
     setSelectedCheck(new Set([...selectedCheck, user.email]));
     setSearchTerm("");
     setSuggestions([]);
+    inputRef.current.focus();
+  };
+
+  const handleRemove = (user) => {
+    const updatedSelect = selected.filter((select) => select.id !== user.id);
+    setSelected(updatedSelect);
+
+    const updatedSelectCheck = new Set(selectedCheck);
+    updatedSelectCheck.delete(user.email);
+    setSelectedCheck(updatedSelectCheck);
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Backspace" && e.target.value === "" && selected.length > 0) {
+      const lastSelect = selected[selected.length - 1];
+      handleRemove(lastSelect);
+      setSuggestions([]);
+    }
   };
 
   return (
     <div className="search-container">
       <div className="search-input">
+        {selected.map((user) => (
+          <Pill
+            key={user.email}
+            image={user.image}
+            text={`${user.firstName} ${user.lastName}`}
+            handleClick={() => handleRemove(user)}
+          />
+        ))}
+
         <div className="">
           <input
             type="text"
-            name=""
-            id=""
+            ref={inputRef}
             placeholder="make your search..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
+            onKeyDown={handleKeyDown}
           />
 
           <ul className="suggestions">
