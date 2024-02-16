@@ -4,7 +4,8 @@ const Pill = ({ image, text, handleClick }) => {
   return (
     <span className="user-pill" onClick={handleClick}>
       <img src={image} alt={text} />
-      <span>{text} &times;</span>
+      <span>{text}</span>
+      <h3>&times;</h3>
     </span>
   );
 };

@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import "./App.css";
 import Pill from "./components/Pill";
+import Suggestion from "./components/Suggestion";
+import search from "./assets/search.png";
 
 function App() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -54,41 +56,61 @@ function App() {
 
   return (
     <div className="search-container">
-      <div className="search-input">
-        {selected.map((user) => (
-          <Pill
-            key={user.email}
-            image={user.image}
-            text={`${user.firstName} ${user.lastName}`}
-            handleClick={() => handleRemove(user)}
-          />
-        ))}
+      <div className="search-content">
+        <div className="search">
+          <h3>Multiple-Select Feature Using React</h3>
+          <div className="pills">
+            {selected.map((user) => (
+              <Pill
+                key={user.email}
+                image={user.image}
+                text={`${user.firstName} ${user.lastName}`}
+                handleClick={() => handleRemove(user)}
+              />
+            ))}
+          </div>
 
-        <div className="">
-          <input
-            type="text"
-            ref={inputRef}
-            placeholder="make your search..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            onKeyDown={handleKeyDown}
-          />
+          <div className="search-input">
+            <img src={search} alt="search" />
+            <input
+              type="text"
+              ref={inputRef}
+              placeholder="search hundreds of users..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              onKeyDown={handleKeyDown}
+            />
+          </div>
 
-          <ul className="suggestions">
+          <div className="suggestions">
             {suggestions?.users?.map((user) =>
               !selectedCheck.has(user.email) ? (
-                <li key={user.email} onClick={() => handleSelect(user)}>
-                  <img
-                    src={user.image}
-                    alt={`${user.firstName} ${user.lastName}`}
-                  />
-                  <span>{`${user.firstName} ${user.lastName}`}</span>
-                </li>
+                <Suggestion
+                  key={user.email}
+                  image={user.image}
+                  text={`${user.firstName} ${user.lastName}`}
+                  handleClick={() => handleSelect(user)}
+                />
               ) : (
                 <></>
               )
             )}
-          </ul>
+            {/* <ul className="suggestions">
+              {suggestions?.users?.map((user) =>
+                !selectedCheck.has(user.email) ? (
+                  <li key={user.email} onClick={() => handleSelect(user)}>
+                    <img
+                      src={user.image}
+                      alt={`${user.firstName} ${user.lastName}`}
+                    />
+                    <span>{`${user.firstName} ${user.lastName}`}</span>
+                  </li>
+                ) : (
+                  <></>
+                )
+              )}
+            </ul> */}
+          </div>
         </div>
       </div>
     </div>
